@@ -1,0 +1,27 @@
+<p *ngIf="id >0 ">Você esta editando o id {{id}}</p>
+<p *ngIf="id < 0 ">Você esta inserindo um novo cadastro</p>
+
+<div class="container">
+
+  <div class="form-floating mb-3">
+    <input type="text" class="form-control" id="name" [(ngModel)]="customer.name" placeholder="João da Silva">
+    <label for="name">Nome</label>
+  </div>
+
+  <div class="form-floating mb-3">
+    <input type="date" class="form-control" id="dateOfBirth" placeholder="18/06/2000">
+    <label for="dateOfBirth">Data de Nascimento</label>
+  </div>
+
+  <div class="form-floating mb-3">
+    <input type="email" class="form-control" id="floatingInput" [(ngModel)]="customer.email" placeholder="name@example.com">
+    <label for="floatingInput">Email address</label>
+  </div>
+  <div class="form-floating">
+    <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+    <label for="floatingPassword">Password</label>
+  </div>
+
+  <button type="button" class="btn btn-primary" (click)="salvar()">Submit</button>
+</div>
+
