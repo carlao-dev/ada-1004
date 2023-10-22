@@ -3,25 +3,31 @@
 
 <div class="container">
 
-  <div class="form-floating mb-3">
-    <input type="text" class="form-control" id="name" [(ngModel)]="customer.name" placeholder="João da Silva">
-    <label for="name">Nome</label>
-  </div>
+  <form #myForm="ngForm" (ngSubmit)="onSubmit(myForm.value)">
+    <div class="form-floating mb-3">
+      <input type="text" class="form-control" id="name" name="name" ngModel required placeholder="João da Silva">
+      <label for="name">Nome</label>
+    </div>
 
-  <div class="form-floating mb-3">
-    <input type="date" class="form-control" id="dateOfBirth" placeholder="18/06/2000">
-    <label for="dateOfBirth">Data de Nascimento</label>
-  </div>
+    <div class="form-floating mb-3">
+      <input type="date" class="form-control" id="dateOfBirth" name="dateOfBirth" ngModel  required placeholder="18/06/2000">
+      <label for="dateOfBirth">Data de Nascimento</label>
+    </div>
 
-  <div class="form-floating mb-3">
-    <input type="email" class="form-control" id="floatingInput" [(ngModel)]="customer.email" placeholder="name@example.com">
-    <label for="floatingInput">Email address</label>
-  </div>
-  <div class="form-floating">
-    <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-    <label for="floatingPassword">Password</label>
-  </div>
+    <div class="form-floating mb-3">
+      <input type="email" class="form-control" id="email" name="email"
+        placeholder="name@example.com" #email="ngModel" ngModel required email>
 
-  <button type="button" class="btn btn-primary" (click)="salvar()">Submit</button>
+        <span class="text-danger" *ngIf="(email.touched || myForm.submitted) && email.errors?.['required']">
+           Email is required
+        </span>
+        <span class="text-danger" *ngIf="email.touched && email.errors?.['email']">
+          Enter a valid email address
+       </span>
+
+      <label for="email">Email address</label>
+    </div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="!myForm.valid">Submit</button>
+  </form>
 </div>
-

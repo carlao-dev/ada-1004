@@ -11,12 +11,12 @@ export class CustomerEditComponent implements OnInit{
 
   id:number = -2
   isNewCustomer:boolean = true;
-  customer: Customer = {
-    id: -1,
-    name: "Carlao",
-    dateOfBirth : new Date(),
-    email: ""
-  }
+  // customer: Customer = {
+  //   id: -1,
+  //   name: "Carlao",
+  //   dateOfBirth : new Date(),
+  //   email: ""
+  // }
 
   constructor (private route: ActivatedRoute){
 
@@ -27,7 +27,8 @@ export class CustomerEditComponent implements OnInit{
         this.id = parseInt(getId)
   }
 
-  salvar(){
+  onSubmit(formData:Customer){
+    console.log(formData)
     debugger
   }
 
