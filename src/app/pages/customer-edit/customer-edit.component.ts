@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Customer } from 'src/app/model/customer';
 
@@ -9,6 +10,7 @@ import { Customer } from 'src/app/model/customer';
 })
 export class CustomerEditComponent implements OnInit{
 
+  myForm: FormGroup;
   id:number = -2
   isNewCustomer:boolean = true;
   // customer: Customer = {
@@ -20,8 +22,17 @@ export class CustomerEditComponent implements OnInit{
 
   constructor (private route: ActivatedRoute){
 
+    this.myForm = new FormGroup({
+      name: new FormControl('', [Validators.required]),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      dateOfBirth: new FormControl('', [Validators.required])
+    });
+
   }
   ngOnInit() {
+
+
+
     const getId = this.route.snapshot.paramMap.get('id');
     if (getId)
         this.id = parseInt(getId)

@@ -3,27 +3,38 @@
 
 <div class="container">
 
-  <form #myForm="ngForm" (ngSubmit)="onSubmit(myForm.value)">
+  <form [formGroup]="myForm" (ngSubmit)="onSubmit(myForm.value)">
     <div class="form-floating mb-3">
-      <input type="text" class="form-control" id="name" name="name" ngModel required placeholder="João da Silva">
+      <input type="text" class="form-control" id="name" formControlName="name" id="name" placeholder="João da Silva">
+      <div *ngIf="myForm.get('name')?.invalid && (myForm.get('name')?.dirty || myForm.get('name')?.touched)">
+        <div *ngIf="myForm.get('name')?.errors?.['required']">
+        </div>
+      </div>
+
       <label for="name">Nome</label>
     </div>
 
     <div class="form-floating mb-3">
-      <input type="date" class="form-control" id="dateOfBirth" name="dateOfBirth" ngModel  required placeholder="18/06/2000">
+      <input type="date" class="form-control" id="dateOfBirth" formControlName="dateOfBirth" placeholder="18/06/2000">
+      <div *ngIf="myForm.get('dateOfBirth')?.invalid && (myForm.get('dateOfBirth')?.dirty || myForm.get('dateOfBirth')?.touched)">
+        <div *ngIf="myForm.get('dateOfBirth')?.errors?.['required']">
+          Data de nascimento é obrigatória.
+        </div>
+      </div>
       <label for="dateOfBirth">Data de Nascimento</label>
     </div>
 
     <div class="form-floating mb-3">
-      <input type="email" class="form-control" id="email" name="email"
-        placeholder="name@example.com" #email="ngModel" ngModel required email>
-
-        <span class="text-danger" *ngIf="(email.touched || myForm.submitted) && email.errors?.['required']">
-           Email is required
-        </span>
-        <span class="text-danger" *ngIf="email.touched && email.errors?.['email']">
-          Enter a valid email address
-       </span>
+      <input type="email" class="form-control" id="email"
+        placeholder="name@example.com" formControlName="email">
+        <div *ngIf="myForm.get('email')?.invalid && (myForm.get('email')?.dirty || myForm.get('email')?.touched)">
+          <div *ngIf="myForm.get('email')?.errors?.['required']">
+            E-mail é obrigatório.
+          </div>
+          <div *ngIf="myForm.get('email')?.errors?.['email']">
+            E-mail inválido.
+          </div>
+        </div>
 
       <label for="email">Email address</label>
     </div>
