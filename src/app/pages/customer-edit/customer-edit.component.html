@@ -1,33 +1,51 @@
-<p *ngIf="id >0 ">Você esta editando o id {{id}}</p>
-<p *ngIf="id < 0 ">Você esta inserindo um novo cadastro</p>
+<p *ngIf="id !== 'newCustomer'  ">Você esta editando o id {{id}}</p>
+<p *ngIf="id === 'newCustomer' ">Você esta inserindo um novo cadastro</p>
 
 <div class="container">
 
-  <form #myForm="ngForm" (ngSubmit)="onSubmit(myForm.value)">
+  <form [formGroup]="customerForm" (ngSubmit)="onSubmit(customerForm.value)">
     <div class="form-floating mb-3">
-      <input type="text" class="form-control" id="name" name="name" ngModel required placeholder="João da Silva">
+      <input type="text" class="form-control" id="name" formControlName="name" placeholder="João da Silva">
+
+      <div *ngIf="customerForm.get('name')?.invalid && (customerForm.get('name')?.dirty || customerForm.get('name')?.touched)">
+        <div class="text-danger" *ngIf="customerForm.get('name')?.errors?.['required']">
+          Nome é obrigatório.
+        </div>
+        <div class="text-danger" *ngIf="customerForm.get('name')?.errors?.['minlength']">
+          Nome tem que ter mais de 6 caracteres.
+        </div>
+      </div>
+
       <label for="name">Nome</label>
     </div>
 
     <div class="form-floating mb-3">
-      <input type="date" class="form-control" id="dateOfBirth" name="dateOfBirth" ngModel  required placeholder="18/06/2000">
+      <input type="date" class="form-control" id="dateOfBirth" name="dateOfBirth" formControlName="dateOfBirth" placeholder="18/06/2000">
       <label for="dateOfBirth">Data de Nascimento</label>
     </div>
 
     <div class="form-floating mb-3">
       <input type="email" class="form-control" id="email" name="email"
-        placeholder="name@example.com" #email="ngModel" ngModel required email>
+        placeholder="name@example.com" formControlName="email">
 
-        <span class="text-danger" *ngIf="(email.touched || myForm.submitted) && email.errors?.['required']">
-           Email is required
-        </span>
-        <span class="text-danger" *ngIf="email.touched && email.errors?.['email']">
-          Enter a valid email address
-       </span>
+        <div *ngIf="customerForm.get('email')?.invalid && (customerForm.get('email')?.dirty || customerForm.get('email')?.touched)">
+          <div class="text-danger" *ngIf="customerForm.get('email')?.errors?.['required']">
+            E-mail é obrigatório.
+          </div>
+          <div class="text-danger" *ngIf="customerForm.get('email')?.errors?.['email']">
+            E-mail inválido.
+          </div>
+
+          <div class="text-danger" *ngIf="customerForm.get('email')?.errors?.['invalidEmailAda']">
+            O email tem que conter @ada.com
+          </div>
+
+        </div>
+
 
       <label for="email">Email address</label>
     </div>
 
-    <button type="submit" class="btn btn-primary" [disabled]="!myForm.valid">Submit</button>
+    <button type="submit" class="btn btn-primary" [disabled]="!customerForm.valid">Submit</button>
   </form>
 </div>
