@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Customer } from 'src/app/model/customer';
 import { CustomerService } from 'src/app/services/customer.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-customer-edit',
@@ -14,7 +15,12 @@ export class CustomerEditComponent implements OnInit{
   id:string = 'newCustomer';
   customerForm : FormGroup
 
-  constructor (private route: ActivatedRoute, private customerService : CustomerService){
+  constructor (
+    private route: ActivatedRoute,
+    private customerService : CustomerService,
+    private toastr: ToastrService,
+    private router: Router
+    ){
     this.customerForm = new FormGroup({
       name: new FormControl('',[Validators.required, Validators.minLength(6)]),
       dateOfBirth: new FormControl('',[Validators.required]),
@@ -37,11 +43,22 @@ export class CustomerEditComponent implements OnInit{
   }
 
   onSubmit(customer:Customer){
-    if (this.id === 'newCustomer')
-      this.customerService.create(customer);
-    else{
-      customer.id = this.id;
-      this.customerService.update(customer);
+
+    try {
+
+      if (this.id === 'newCustomer')
+        this.customerService.create(customer);
+      else{
+        customer.id = this.id;
+        this.customerService.update(customer);
+      }
+
+      this.router.navigate(['customer-list']);
+      this.toastr.success("Cliente Salvo com sucesso","Sucesso!");
+
+    } catch (error) {
+     this.toastr.error("Erro ao Salvar o cliente","Ops... Deu erro!");
+     console.log(error)
     }
 
   }
