@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Customer } from '../model/customer';
+import { HttpClient } from '@angular/common/http';
 
 
 @Injectable({
@@ -10,7 +11,7 @@ export class CustomerService {
 
   customers: Customer[] = []
 
-  constructor() {
+  constructor(private http: HttpClient) {
 
     const customer:Customer = {
       id: self.crypto.randomUUID(),
@@ -40,18 +41,18 @@ export class CustomerService {
     return this.customers.find( customer => customer.id === id);
   }
 
-  update(customer: Customer){
+  update(customer: Customer) : Promise<void> {
 
-    let searchCustomer = this.getById(customer.id);
+    return new Promise ((resolve, reject) => {
+      let searchCustomer = this.getById(customer.id);
 
-    if( searchCustomer){
-      searchCustomer.name = customer.name;
-      searchCustomer.email = customer.email;
-      searchCustomer.dateOfBirth = customer.dateOfBirth;
-    }
-
-
-
+      if( searchCustomer){
+        searchCustomer.name = customer.name;
+        searchCustomer.email = customer.email;
+        searchCustomer.dateOfBirth = customer.dateOfBirth;
+      }
+      resolve();
+    })
   }
 
   delete(id:string){
@@ -65,6 +66,13 @@ export class CustomerService {
     customer.id = uuid;
 
     this.customers.push(customer)
+
+  }
+
+  getCatFacts() {
+
+    return  this.http.get('https://cat-fact.herokuapp.com/facts')
+
 
   }
 

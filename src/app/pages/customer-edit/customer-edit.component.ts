@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Customer } from 'src/app/model/customer';
 import { CustomerService } from 'src/app/services/customer.service';
 import { ToastrService } from 'ngx-toastr';
+import { take } from 'rxjs/internal/operators/take';
 
 @Component({
   selector: 'app-customer-edit',
@@ -42,7 +43,7 @@ export class CustomerEditComponent implements OnInit{
     }
   }
 
-  onSubmit(customer:Customer){
+  async onSubmit(customer:Customer){
 
     try {
 
@@ -50,8 +51,14 @@ export class CustomerEditComponent implements OnInit{
         this.customerService.create(customer);
       else{
         customer.id = this.id;
-        this.customerService.update(customer);
+        await this.customerService.update(customer);
       }
+
+      const catFacts = this.customerService.getCatFacts();
+      catFacts.pipe(take(1)).subscribe(result => {
+        console.log(result);
+     });
+
 
       this.router.navigate(['customer-list']);
       this.toastr.success("Cliente Salvo com sucesso","Sucesso!");
