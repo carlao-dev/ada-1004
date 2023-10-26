@@ -54,8 +54,8 @@ export class CustomerEditComponent implements OnInit{
         await this.customerService.update(customer);
       }
 
-      const catFacts = this.customerService.getCatFacts();
-      catFacts.pipe(take(1)).subscribe(result => {
+      this.customerService.getCatFacts()
+      .pipe(take(1)).subscribe(result => {
         console.log(result);
      });
 
